@@ -1,7 +1,7 @@
 package backend.webapp.security;
 
 import backend.webapp.models.Account;
-import backend.webapp.models.Role;
+
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;

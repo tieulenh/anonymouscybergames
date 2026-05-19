@@ -6,9 +6,6 @@ import backend.webapp.repositories.AccountRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Service
 public class AccountService {
     private final AccountRepo accountRepo;
