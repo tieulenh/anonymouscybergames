@@ -1,5 +1,5 @@
 import { Navigate } from "react-router-dom"
-import { getToken } from "../logics/localstorage"
+import { getToken } from "./utils/localstorage"
 import { jwtDecode } from "jwt-decode"
 
 function ProtectedRoute({ children, role }) {

@@ -2,8 +2,7 @@ package backend.webapp.controllers;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,20 +27,15 @@ public class GameController {
         this.gameDetailService = gameDetailService;
     }
     @GetMapping
-    public List<Game> getGames() {
-        return gameService.getAllGames();
+    public List<Game> getEnableGames() {
+        return gameService.getAllEnableGames();
     }
     @GetMapping("/{id}")
     public GameDetail getGameDetail(@PathVariable Long id) {
         return gameDetailService.getGameDetailByGameId(id);
     }
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteGame(
-            @PathVariable Long id
-    ) {
-
-        gameService.deleteGame(id);
-
-        return ResponseEntity.ok("Delete success");
+    @GetMapping("/rank")
+    public List<Game> getTopGame(){
+        return gameService.getTopGames();
     }
 }

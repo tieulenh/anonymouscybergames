@@ -17,8 +17,12 @@ public interface GameRepo extends JpaRepository<Game, Long> {
     List<Game> findByCategoriesContaining(String category);
     List<Game> findByStatusContaining(String status);
 
+
     @Modifying
     @Transactional
-    @Query("UPDATE Game g SET g.status = 'DISABLE' WHERE g.id = :id")
-    void disableGame(@Param("id") Long id);
+    @Query("UPDATE Game g SET g.status = :newStatus WHERE g.id = :id")
+    void updateStatus(@Param("id") Long id, @Param("newStatus") String newStatus);
+
+    @Query(value = "SELECT * FROM games ORDER BY id LIMIT 5 ASC", nativeQuery = true)  
+    List<Game> findTop5Games();
 }

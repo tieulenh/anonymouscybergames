@@ -1,6 +1,6 @@
 package backend.webapp.models;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -20,10 +20,9 @@ public class GameDetail {
 
     private String trailerUrl;
 
-    private String developer;
 
     // 1 game - 1 detail
-    @JsonBackReference
+    @JsonManagedReference
     @OneToOne
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
@@ -31,11 +30,10 @@ public class GameDetail {
     public GameDetail() {}
 
     public GameDetail(String description, String systemRequirements,
-                      String trailerUrl, String developer, Game game) {
+                      String trailerUrl, Game game) {
         this.description = description;
         this.systemRequirements = systemRequirements;
         this.trailerUrl = trailerUrl;
-        this.developer = developer;
         this.game = game;
     }
 
@@ -68,15 +66,6 @@ public class GameDetail {
     public void setTrailerUrl(String trailerUrl) {
         this.trailerUrl = trailerUrl;
     }
-
-    public String getDeveloper() {
-        return developer;
-    }
-
-    public void setDeveloper(String developer) {
-        this.developer = developer;
-    }
-
 
     public Game getGame() {
         return game;

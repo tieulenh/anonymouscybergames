@@ -1,6 +1,5 @@
 package backend.webapp.controllers;
 
-
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,89 +8,103 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import java.util.Map;
-import backend.webapp.DTOs.AuthRequest;
+
+import backend.webapp.DTOs.responses.UserLoginRes;
+import backend.webapp.DTOs.responses.UserProfileRes;
 import backend.webapp.models.Account;
+import backend.webapp.security.JwtUtil;
 import backend.webapp.services.AccountService;
-import backend.webapp.services.JwtService;
 import jakarta.servlet.http.HttpServletRequest;
 import backend.webapp.DTOs.Response;
+import backend.webapp.DTOs.requests.AuthRequest;
 
 @RestController
 @RequestMapping("/api")
 public class AuthController {
-    
-    private AccountService accountService;
+
+    private final AccountService accountService;
+
     public AuthController(AccountService accountService) {
         this.accountService = accountService;
     }
 
     @Autowired
-    private JwtService jwtService;
+    private JwtUtil jwtUtil;
 
-    @PostMapping("/login")
+    // =========================
+    // 1. API ĐĂNG NHẬP
+    // =========================
+    @PostMapping("/auth/login")
     public ResponseEntity<?> login(@RequestBody AuthRequest loginRequest) {
-        // In ra để kiểm tra xem dữ liệu đã sang chưa
         System.out.println("Email: " + loginRequest.getEmail());
         System.out.println("Password: " + loginRequest.getPassword());
+
         Account account = accountService.login(loginRequest.getEmail(), loginRequest.getPassword());
+
         if (account != null) {
-            if("ACTIVATED".equals(account.getStatus())){
-                String token = jwtService.generateToken(account.getId(), account.getRole().getName());
+            if ("ACTIVATED".equals(account.getStatus())) {
+                String token = jwtUtil.generateToken(account);
+                UserLoginRes loginData = new UserLoginRes(account); // 👈 Dùng DTO đăng nhập mới
                 return ResponseEntity.ok(
-                    new Response(
-                        true, 
-                        "Đăng nhập thành công!", 
-                        Map.of(
-                            "token", token,
-                            "username", account.getUsername(),
-                            "role", account.getRole().getName() 
-                        )
+                    new Response<UserLoginRes> (
+                        true,
+                        "Đăng nhập thành công!",
+                        token,
+                        loginData
                     )
                 );
-            }
-            else {
+            } else {
                 return ResponseEntity.status(401).body(
-                    new Response(
-                        false, 
-                        "Your account is " + account.getStatus().toLowerCase(), 
-                        Map.of(
-                            
+                    new Response<>( 
+                            false,
+                            "Your account is " + account.getStatus().toLowerCase(),
+                            null,
+                            null
                         )
-                    )
                 );
             }
-            
+
         } else {
-            return ResponseEntity.status(401).body(new Response(false, "Sai tài khoản hoặc mật khẩu", null));
+            return ResponseEntity.status(401).body(new Response<>(false, "Sai tài khoản hoặc mật khẩu", null, null));
         }
     }
 
-    @PostMapping("/register")
+    // =========================
+    // 2. API ĐĂNG KÝ
+    // =========================
+    @PostMapping("/auth/register")
     public ResponseEntity<?> register(@RequestBody AuthRequest registerRequest) {
         Account account = accountService.register(registerRequest.getEmail(), registerRequest.getPassword());
         if (account != null) {
-            String token = jwtService.generateToken(account.getId(), account.getRole().getName());
-            return ResponseEntity.ok(
-                new Response(
-                    true, 
-                    "Đăng ký thành công!", 
-                    Map.of(
-                        "token", token, 
-                        "username", account.getUsername(),
-                        "role", account.getRole().getName()
-                    )
-                )
-            );
+            String token = jwtUtil.generateToken(account);
+            UserLoginRes loginData = new UserLoginRes(account); 
+            return ResponseEntity.ok(new Response<UserLoginRes>(true, "Đăng ký thành công!", token, loginData));
         }
-        return ResponseEntity.badRequest()
-            .body(new Response(false, "Email already in use!", null));
+        return ResponseEntity.badRequest().body(new Response<>(false, "Email already in use!", null, null));
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<?> getProfile(
-            HttpServletRequest request
-    ) {
-        return null;
+    // =========================
+    // 3. API LẤY THÔNG TIN TÀI KHOẢN (Đã hoàn thiện)
+    // =========================
+    @GetMapping("/auth/me")
+    public ResponseEntity<?> getProfile(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+
+        if (header != null && header.startsWith("Bearer ")) {
+            String token = header.substring(7);
+
+            if (jwtUtil.isValid(token)) {
+                // Trích xuất Account ID được cấu hình trong Payload của Token
+                Long accountId = jwtUtil.extractAccountId(token);
+                Account account = accountService.getAccountById(accountId);
+
+                if (account != null) {
+                    UserProfileRes userResponse = new UserProfileRes(account);
+                    return ResponseEntity.ok(new Response<>(true, "Lấy thông tin thành công!", token, userResponse));
+                }
+            }
+        }
+
+        return ResponseEntity.status(401).body(new Response<>(false, "Chưa xác thực hoặc Token không hợp lệ", null, null));
     }
 }

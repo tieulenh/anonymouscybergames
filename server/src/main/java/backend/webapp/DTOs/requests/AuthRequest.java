@@ -1,4 +1,4 @@
-package backend.webapp.DTOs;
+package backend.webapp.DTOs.requests;
 
 public class AuthRequest {
     private String email;

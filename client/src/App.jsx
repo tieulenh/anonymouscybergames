@@ -1,29 +1,34 @@
 import { useState } from 'react'
-
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
+// add css framework 
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'tailwindcss/index.css'
+
+// add component to use
+// common layout
+import MainLayout from './layouts/mainLayout'
+// special page
 import LoginPage from './pages/loginPage'
 import RegisterPage from './pages/registerPage'
-import ProfilePage from './pages/profilePage'
-import MainLayout from './layouts/mainLayout'
+// content on layout
+import GameList from './views/gameList'
+import GameDetail from './views/gameDetail'
+import GameManage from './views/gameManage/GameManage'
+import HomeView from './views/homeView'
 
-import GameList from './contents/gameList'
-import GameDetail from './contents/gameDetail'
-import GameManage from './contents/gameManage'
-
+// 
 import ProtectedRoute from './protectedRoute'
-
-
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<MainLayout content={<p>this is home page</p>} />} />
+                <Route path="/" element={<MainLayout content={<HomeView />} />} />
                 <Route path="/games" element={<MainLayout content={<GameList />} />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
-                <Route path="/profile" element={<ProfilePage />} />
+                
                 <Route path="/games/:id" element={<MainLayout content={<GameDetail />} />} />
                 <Route
                     path="/manage/games"

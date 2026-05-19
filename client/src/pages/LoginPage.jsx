@@ -1,8 +1,5 @@
 import LoginForm from '../forms/login'
 
-import '../styles/auth.css'
-import '../styles/loginPage.css'
-
 const LoginPage = () => {
     return (
         <div className="auth-container login-page">

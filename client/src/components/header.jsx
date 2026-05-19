@@ -1,13 +1,19 @@
 import SearchBar from "./searchbar";
-import Account from "./account";
-
-import "../styles/header.css";
+import Account from "./account/Account";
+import logo from '../assets/logo512x512.png'
 
 const Header = ({ toggleSidebar }) => {
 
     return (
 
-        <header className="header">
+        <header 
+            className="header"
+            style={
+                {
+                    borderBottom: "2px solid blue"
+                }
+            }
+        >
 
             {/* LEFT */}
 
@@ -19,12 +25,16 @@ const Header = ({ toggleSidebar }) => {
                 >
                     ☰
                 </button>
-
                 <a
                     href="/"
                     className="logo"
+                    style={
+                        {
+                            color: "red"
+                        }
+                    }
                 >
-                    AWEB
+                    ACG
                 </a>
 
             </div>
@@ -33,15 +43,14 @@ const Header = ({ toggleSidebar }) => {
 
             <div className="header-center">
 
-                <SearchBar />
-
             </div>
 
             {/* RIGHT */}
 
             <div className="header-right">
-
-                <Account />
+                <SearchBar  />
+                <div style={{margin: "0 32px 0 0"}}></div>
+                <Account className={'abc'}/>
 
             </div>
 

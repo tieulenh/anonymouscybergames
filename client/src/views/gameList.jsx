@@ -27,7 +27,7 @@ const GameList = () => {
             <div className="container">
                 <h1 className="mb-3">Game List</h1>
 
-                <div className="row g-3">
+                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-4">
                     {games.map(game => (
                         <div
                             key={game.id}

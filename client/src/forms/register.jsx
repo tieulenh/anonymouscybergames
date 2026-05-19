@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { saveAuthData } from '../../logics/localstorage';
+import { saveAuthData } from '../utils/localstorage';
 
 const RegisterForm = () => {
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const RegisterForm = () => {
         }
 
         try {
-            const response = await fetch('/api/register', {
+            const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 // Gửi đủ các trường mà model Accounts ở Backend yêu cầu

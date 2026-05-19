@@ -1,8 +1,5 @@
 import RegisterForm from "../forms/register"
 
-import '../styles/auth.css'
-import '../styles/registerPage.css'
-
 const RegisterPage = () => {
 
     return (

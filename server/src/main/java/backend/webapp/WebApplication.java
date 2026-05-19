@@ -1,11 +1,35 @@
 package backend.webapp;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class WebApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(WebApplication.class, args);
-	}
+
+    public static void main(String[] args) {
+        // 1. Cấu hình quét file .env một cách thông minh
+        Dotenv dotenv = Dotenv.configure()
+                .directory("./") // quét env tại thư mục gốc của project
+                .ignoreIfMissing() // Nếu không thấy ở đây thì bỏ qua, không ném lỗi sập app
+                .load();
+
+        // 2. Nạp toàn bộ các biến tìm thấy từ .env vào System Properties của Java
+        dotenv.entries().forEach(entry -> {
+            System.setProperty(entry.getKey(), entry.getValue());
+        });
+
+        // 3. Nếu ở trên vẫn hụt (do đứng ở thư mục con), quét thêm 1 lần nữa ở thư mục hiện tại của module server
+        Dotenv dotenvServer = Dotenv.configure()
+                .directory("./server") // Đường dẫn tương đối vào module server
+                .ignoreIfMissing()
+                .load();
+        
+        dotenvServer.entries().forEach(entry -> {
+            System.setProperty(entry.getKey(), entry.getValue());
+        });
+
+        // Sau khi các biến môi trường đã được nạp vào RAM hệ thống, mới cho Spring chạy
+        SpringApplication.run(WebApplication.class, args);
+    }
 }

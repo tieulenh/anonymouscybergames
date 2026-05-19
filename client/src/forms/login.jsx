@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { saveAuthData } from '../../logics/localstorage';
+import { saveAuthData } from '../utils/localstorage';
 
 const LoginForm = () => {
     const navigate = useNavigate();
@@ -10,16 +10,18 @@ const LoginForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('/api/login', {
+            const response = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
+
             console.log("response status:", response.status);
+            
             const data = await response.json();
             if (data.success) {
                 alert(data.message);
-                saveAuthData(data.data.token, data.data.username, data.data.role);
+                saveAuthData(data.token, data.data);
                 navigate('/');
             } else {
                 alert(data.message);

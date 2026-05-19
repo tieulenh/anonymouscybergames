@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "../styles/sidebar.css";
 
 const navLinks = [
     { name: "Home", path: "/" },

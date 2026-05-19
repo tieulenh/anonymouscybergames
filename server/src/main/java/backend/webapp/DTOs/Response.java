@@ -1,37 +1,37 @@
 package backend.webapp.DTOs;
 
-public class Response {
+public class Response<T> { 
     private boolean success;
     private String message;
-    private Object data;
+    private String token; // Thêm trường token vào Response
+    private T data;         
 
-    public Response(boolean success, String message, Object data) {
+    public Response(boolean success, String message, String token, T data) {
         this.success = success;
         this.message = message;
+        this.token = token;
         this.data = data;
     }
 
-    public boolean isSuccess() {
-        return success;
+    // Các hàm static helper giúp tạo nhanh response (Tiện cực kỳ!)
+    public static <T> Response<T> ok(String message, String token, T data) {
+        return new Response<>(true, message, token, data);
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public static <T> Response<T> fail(String message) {
+        return new Response<>(false, message, null, null);
     }
 
-    public String getMessage() {
-        return message;
-    }
+    // Getters & Setters
+    public boolean isSuccess() { return success; }
+    public void setSuccess(boolean success) { this.success = success; }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
+    public String getMessage() { return message; }
+    public void setMessage(String message) { this.message = message; }
 
-    public Object getData() {
-        return data;
-    }
+    public String getToken() { return token; }
+    public void setToken(String token) { this.token = token; }
 
-    public void setData(Object data) {
-        this.data = data;
-    }
+    public T getData() { return data; }
+    public void setData(T data) { this.data = data; }
 }

@@ -2,15 +2,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
 
+import tailwindcss from '@tailwindcss/vite'
+
 // https://vite.dev/config/
 export default defineConfig({
-    root: './',
-
-    // Thư mục chứa static assets (favicon, images...)
-    publicDir: './public',
-
     plugins: [
-        react()
+        react(),
+        tailwindcss()
     ],
 
     build: {
@@ -22,7 +20,7 @@ export default defineConfig({
 
         rollupOptions: {
             input: {
-                main: './index.html',  // Input từ public/
+                main: './index.html',  
             },
             output: {
                 // Bundle files vào assets/
@@ -46,13 +44,14 @@ export default defineConfig({
     },
 
     server: {
+        host: '0.0.0.0',
         port: 3000,
         proxy: {
-        '/api': {
-            target: 'http://localhost:8080',
-            changeOrigin: true,
-        }
-    },
-        mode: 'development',
+            '/api': {
+                target: 'http://localhost:8080/',
+                changeOrigin: true,
+            }
+        },
+        mode: 'development'
     }
 })
