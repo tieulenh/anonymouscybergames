@@ -57,27 +57,3 @@ dist-ssr
 *.sln
 *.sw?
 .env
-
-# ==========================================
-# Postman Ignore Rules
-# ==========================================
-
-# Bỏ qua thư mục cấu hình ẩn của Postman (Thường sinh ra khi dùng extension trên VS Code)
-.postman/
-
-# Bỏ qua các file Export dữ liệu của Postman (Collections và Environments)
-*.postman_collection.json
-*.postman_environment.json
-*.postman_globals.json
-
-# Bỏ qua các file log hoặc dump dữ liệu tạm thời của Postman
-postman/logs/
-postman/dump.json
-
-# Postman runtime data
-.postman/
-postman/
-
-# Postman global and workspace variables
-*.yaml
-
