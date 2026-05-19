@@ -74,3 +74,10 @@ dist-ssr
 postman/logs/
 postman/dump.json
 
+# Postman runtime data
+.postman/
+postman/
+
+# Postman global and workspace variables
+*.yaml
+
