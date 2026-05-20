@@ -6,12 +6,11 @@ import backend.webapp.models.Profile;
 public class UserLoginRes {
     private String username;
     private String avatarUrl;
-    private String roles; // Trả về danh sách tên Role gọn gàng (VD: ["ADMIN", "USER"])
-
+    private String role; 
     // Constructor tự động trích xuất các thông tin cần thiết nhất cho phiên đăng nhập
     public UserLoginRes(Account account) {
         this.username = account.getUsername();
-        this.roles = account.getRole() != null ? account.getRole().getName() : null;
+        this.role = account.getRole() != null ? account.getRole().getName() : null;
         
         // Lấy avatarUrl từ Profile nếu có
         Profile profile = account.getProfile();
@@ -23,5 +22,5 @@ public class UserLoginRes {
     // Getters
     public String getUsername() { return username; }
     public String getAvatarUrl() { return avatarUrl; }
-    public String getRoles() { return roles; }
+    public String getRole() { return role; }
 }

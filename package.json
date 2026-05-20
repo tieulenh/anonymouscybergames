@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "start cmd /k \"cd server && mvnw spring-boot:run\" && start cmd /k \"cd client && npm run dev\""
+    "devfull": "start cmd /k \"cd server && mvnw spring-boot:run\" && start cmd /k \"cd client && npm run dev\""
   },
   "repository": {
     "type": "git",

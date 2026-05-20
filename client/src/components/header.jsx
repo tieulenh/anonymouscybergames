@@ -14,11 +14,8 @@ const Header = ({ toggleSidebar }) => {
                 }
             }
         >
-
             {/* LEFT */}
-
             <div className="header-left">
-
                 <button
                     className="menu-btn"
                     onClick={toggleSidebar}
@@ -36,24 +33,18 @@ const Header = ({ toggleSidebar }) => {
                 >
                     ACG
                 </a>
-
             </div>
 
             {/* CENTER */}
-
-            <div className="header-center">
-
-            </div>
+            <div className="header-center"></div>
 
             {/* RIGHT */}
-
             <div className="header-right">
                 <SearchBar  />
                 <div style={{margin: "0 32px 0 0"}}></div>
                 <Account className={'abc'}/>
 
             </div>
-
         </header>
     );
 }

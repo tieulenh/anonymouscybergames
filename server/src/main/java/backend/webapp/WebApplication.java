@@ -13,8 +13,6 @@ public class WebApplication {
                 .directory("./") // quét env tại thư mục gốc của project
                 .ignoreIfMissing() // Nếu không thấy ở đây thì bỏ qua, không ném lỗi sập app
                 .load();
-
-        // 2. Nạp toàn bộ các biến tìm thấy từ .env vào System Properties của Java
         dotenv.entries().forEach(entry -> {
             System.setProperty(entry.getKey(), entry.getValue());
         });
@@ -24,7 +22,6 @@ public class WebApplication {
                 .directory("./server") // Đường dẫn tương đối vào module server
                 .ignoreIfMissing()
                 .load();
-        
         dotenvServer.entries().forEach(entry -> {
             System.setProperty(entry.getKey(), entry.getValue());
         });

@@ -29,8 +29,7 @@ const RegisterForm = () => {
 
             if (response.ok) {
                 console.log('data', data);
-                saveAuthData(data.data.token, data.data.username, data.data.role); // Lưu token, username và role vào localStorage
-
+                saveAuthData(data.token, data.data);
                 alert(data.message); // "Register success!" từ Java
                 navigate('/'); // Chuyển hướng về trang chủ sau khi đăng ký thành công
             } else {

@@ -1,15 +1,19 @@
 import { useRef, useState } from "react";
-import { User } from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import AccountMenu from "./AccountMenu";
-import "./Account.module.scss";
+
+import AccountToggle from "./AccountToggle";
+import LogedInMenu from "./LogedInMenu";
+
+import styles from "./Account.module.scss";
 
 import {
     isSignedIn,
     clearAuthData,
     getUser
 } from "../../utils/localstorage";
+
 
 const Account = ({ className, ...props }) => {
     const navigate = useNavigate();
@@ -20,48 +24,31 @@ const Account = ({ className, ...props }) => {
     useOutsideClick(menuRef, () => { setIsMenuOpen(false) }, isMenuOpen);
     return (
         <div
-            className={`avatar_container ${className}`}
+            className={`avatar_container ${className} ${styles.avatar_container || ''}`}
             ref={menuRef}
             {...props}
         >
-            <div
-                className="avatar_img" 
-                onClick={() => setIsMenuOpen(prev => !prev)}
-                style={{
-                    cursor: "pointer",
-                    width: '36px',
-                    aspectRatio: '1/1',
-                    borderRadius: '50%',
-                    border: '2px solid #00ff4c',
-                    overflow: 'hidden'
+            {!isLoggedIn && 
+                <div
+                    className={`account_menu ${styles.sign_container || ''}`}
+                >   
+                    <a href="/login" >Login</a>
+                    <span> / </span>
+                    <a href="/register" >Register</a>
+                </div>
+            }
 
-                }}
-            >
-                {isLoggedIn ? (
-                    <img 
-                        src={getUser()?.avatarUrl || null}
-                        style={{
-                            width: '100%',
-                            aspectRatio: '1/1',
-                            objectFit: 'cover'
-                        }}
-                    />
-                    
-                ) : (
-                    <User 
-                        style={{
-                                width: '100%',
-                                aspectRatio: '1/1',
-                                objectFit: 'cover'
-                            }}
-                    />
-                )}
-            </div>
+            <AccountToggle 
+                isLoggedIn={isLoggedIn} 
+                setIsMenuOpen={() => setIsMenuOpen(prev => !prev)}
+                user={getUser()}
+                styleModule={styles}
+            />
             {isMenuOpen && (
                 <div
-                    className={"account_menu"}
+                    className={`account_menu ${styles.account_menu || ''}`}
                 >
-                    <AccountMenu 
+                    <LogedInMenu
                         isLoggedIn={isLoggedIn} 
                         user={getUser()} 
                         handlefFuncs={{ 
@@ -69,11 +56,12 @@ const Account = ({ className, ...props }) => {
                             onLogout: () => {
                                 clearAuthData();
                                 setIsLoggedIn(false);
-                                navigate("/login");
+                                navigate("/");
                             },
                             onLogin: () => navigate("/login")
                         }}
                     />
+                    <span>Setting</span>
                 </div>
             )}
         </div>

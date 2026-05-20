@@ -16,6 +16,7 @@ import GameList from './views/gameList'
 import GameDetail from './views/gameDetail'
 import GameManage from './views/gameManage/GameManage'
 import HomeView from './views/homeView'
+import Profile from './views/profile'
 
 // 
 import ProtectedRoute from './protectedRoute'
@@ -28,6 +29,7 @@ function App() {
                 <Route path="/games" element={<MainLayout content={<GameList />} />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
+                <Route path="/profile" element={ <MainLayout content={<Profile />} /> } />
                 
                 <Route path="/games/:id" element={<MainLayout content={<GameDetail />} />} />
                 <Route

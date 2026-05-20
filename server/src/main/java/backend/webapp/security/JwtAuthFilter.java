@@ -11,8 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class JwtAuthFilter extends OncePerRequestFilter {
 
@@ -44,18 +44,20 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         Long accountId = jwtUtil.extractAccountId(token);
-        List<String> roles = jwtUtil.extractRoles(token);
+        String role = jwtUtil.extractRole(token);
 
-        // Map list string role thành các quyền tương ứng của Spring Security
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(r -> new SimpleGrantedAuthority("ROLE_" + r))
-                .collect(Collectors.toList());
+        // Tạo danh sách quyền hợp lệ cho Spring Security từ 1 Role duy nhất
+        List<SimpleGrantedAuthority> authorities = Collections.emptyList();
+        if (role != null && !role.trim().isEmpty()) {
+            // Chuẩn hóa tên quyền thành "ROLE_ADMIN", "ROLE_USER" để khớp với @PreAuthorize("hasRole('ADMIN')")
+            authorities = List.of(new SimpleGrantedAuthority("ROLE_" + role));
+        }
 
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(
                         accountId, 
                         null,
-                        authorities
+                        authorities // Truyền List vào đây thay vì đối tượng đơn lẻ
                 );
 
         SecurityContextHolder.getContext().setAuthentication(auth);
