@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { getUser } from "../../utils/localstorage";
+import { useState, useEffect } from "react";
+import { getUser, getSideMenu, saveSideMenu } from "../../utils/localstorage";
 
 const navLinks = [
     { name: "Home", path: "/" },
@@ -12,8 +12,30 @@ const forAdmin = [
     { name: "Manage Accounts", path: "/manage/accounts" },
 ];
 
+import ShowMenu from "../ShowMenu";
+
+import styles from "./Sidebar.module.scss";
+
 function Sidebar({ isOpen, closeSidebar }) {
     const [manageOpen, setManageOpen] = useState(false);
+    useEffect(() => {
+        async function fetchSideMenu() {
+            if(!getSideMenu()) {
+                try {
+                    const response = await fetch("/api/menus/sideMenu",{
+                        method: "GET"
+                    });
+                    const data = await response.json();
+                    console.log("Side menu:", data);
+                    saveSideMenu(data);
+                } catch (error) {
+                    console.error("Error fetching menu:", error);
+                }
+            }
+        }
+        fetchSideMenu();
+    }, []);
+
     return (
         isOpen && (
             <>
@@ -27,15 +49,9 @@ function Sidebar({ isOpen, closeSidebar }) {
                     </div>
 
                     {/* NORMAL LINKS */}
-                    {navLinks.map((link) => (
-                        <a
-                            key={link.path}
-                            href={link.path}
-                            onClick={closeSidebar}
-                        >
-                            {link.name}
-                        </a>
-                    ))}
+                    <ShowMenu menus={getSideMenu()?.children || []} />
+
+                    <a href="/testMenu">Test menu</a>
 
                     {/* ADMIN MENU */}
                     {getUser()?.role === "ADMIN" && (

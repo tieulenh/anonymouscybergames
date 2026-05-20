@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import useOutsideClick from "../../hooks/useOutsideClick";
@@ -19,6 +19,7 @@ const Account = ({ className, ...props }) => {
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(isSignedIn());
+
     // Sử dụng Hook ở đây thay cho useEffect cũ
     const menuRef = useRef(null);
     useOutsideClick(menuRef, () => { setIsMenuOpen(false) }, isMenuOpen);

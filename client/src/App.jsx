@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 // add css framework 
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'tailwindcss/index.css'
+import './styles/global.scss'
 
 // add component to use
 // common layout
@@ -17,6 +18,7 @@ import GameDetail from './views/gameDetail'
 import GameManage from './views/gameManage/GameManage'
 import HomeView from './views/homeView'
 import Profile from './views/profile'
+import TestMenu from './views/TestMenu'
 
 // 
 import ProtectedRoute from './protectedRoute'
@@ -30,7 +32,7 @@ function App() {
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/profile" element={ <MainLayout content={<Profile />} /> } />
-                
+                <Route path="/testMenu" element={ <MainLayout content={<TestMenu />} /> } />
                 <Route path="/games/:id" element={<MainLayout content={<GameDetail />} />} />
                 <Route
                     path="/manage/games"

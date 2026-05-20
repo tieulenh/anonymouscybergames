@@ -24,4 +24,9 @@ public class MenuController {
         List<MenuDTO> menus = menuService.getDynamicMenu();
         return ResponseEntity.ok(menus);
     }
+    @GetMapping("/sideMenu")
+    public ResponseEntity<MenuDTO> getSideMenu() {
+        MenuDTO menu = menuService.getSideMenu();
+        return ResponseEntity.ok(menu);
+    }
 }

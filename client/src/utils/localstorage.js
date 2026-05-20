@@ -1,15 +1,16 @@
 import { jwtDecode } from "jwt-decode";
 
-// Hàm xử lý sau khi nhận được phản hồi (Response) từ API Login của Spring Boot
-
 // setters
 const saveToken = (token) => {
     localStorage.setItem("token", token);
 };
 
-
 const saveUser = (user) => {
     localStorage.setItem("user", JSON.stringify(user));
+};
+
+const saveSideMenu = (menus) => {
+    localStorage.setItem("SideMenu", JSON.stringify(menus));
 };
 
 // getters
@@ -22,6 +23,11 @@ const getUser = () => {
     return user ? JSON.parse(user) : null;
 };
 
+const getSideMenu = () => {
+    const menus = localStorage.getItem("SideMenu");
+    return menus ? JSON.parse(menus) : null;
+};
+
 // clear
 const removeToken = () => {
     localStorage.removeItem("token");
@@ -29,6 +35,10 @@ const removeToken = () => {
 
 const removeUser = () => {
     localStorage.removeItem("user");
+}
+
+const removeSideMenu = () => {
+    localStorage.removeItem("SideMenu");
 }
 
 // conbined functions
@@ -47,9 +57,9 @@ const isSignedIn = () => {
 };
 
 export { 
-    saveToken, saveUser,
-    getToken, getUser,
-    removeToken, removeUser,
+    saveToken, saveUser, saveSideMenu,
+    getToken, getUser, getSideMenu,
+    removeToken, removeUser, removeSideMenu,
     saveAuthData, clearAuthData, 
     isSignedIn
 };

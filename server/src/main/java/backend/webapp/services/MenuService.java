@@ -24,5 +24,13 @@ public class MenuService {
                 .map(MenuDTO::fromEntity)
                 .toList();
     }
+    public MenuDTO getSideMenu() {
+        List<Menu> activeMenus = menuRepository.findAllActiveMenus();
+        return activeMenus.stream()
+                .filter(menu -> "sideMenu".equals(menu.getTitle()))
+                .findFirst()
+                .map(MenuDTO::fromEntity)
+                .orElse(null);
+    }
     
 }

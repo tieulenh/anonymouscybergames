@@ -20,4 +20,7 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
     // Lấy menu dựa trên quyền của người dùng
     @Query("SELECT m FROM Menu m WHERE m.permissionCode IN :codes AND m.active = true")
     List<Menu> findByPermissionCodes(@Param("codes") List<String> codes);
+
+    @Query("SELECT m FROM Menu m WHERE m.active = true ORDER BY m.sortOrder ASC")
+    List<Menu> findAllActiveMenus();
 }

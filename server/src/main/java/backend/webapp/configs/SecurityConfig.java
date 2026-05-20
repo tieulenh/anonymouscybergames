@@ -30,15 +30,15 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-            .cors(cors -> {})
-            // .cors(cors -> cors.configurationSource(request -> {
-            //     CorsConfiguration config = new CorsConfiguration();
-            //     config.setAllowedOriginPatterns(Arrays.asList("*")); // Cho phép tất cả các nguồn (bao gồm Postman)
-            //     config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-            //     config.setAllowedHeaders(Arrays.asList("*"));
-            //     config.setAllowCredentials(false); 
-            //     return config;
-            // }))
+            // .cors(cors -> {})
+            .cors(cors -> cors.configurationSource(request -> {
+                CorsConfiguration config = new CorsConfiguration();
+                config.setAllowedOrigins(Arrays.asList("http://localhost:3000")); // Điền các cổng chạy React của bạn vào đây
+                config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+                config.setAllowCredentials(true); 
+                return config;
+            }))
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
 
